@@ -1,2 +1,0 @@
-# saylioz.github.io
-Portfolio

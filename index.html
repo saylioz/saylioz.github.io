@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ilyas Laanani, software engineering student</title>
+<meta name="description" content="Portfolio of Ilyas Laanani, computer science engineering student at Polytech Lyon and apprentice software engineer at Orange France.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #EDF0F7;
+    --surface: #FFFFFF;
+    --ink: #131A36;
+    --muted: #586080;
+    --line: #CDD3E3;
+    --accent: #4A3CE0;
+    --accent-soft: #DCD9FB;
+    --link-node: #0E8F80;
+    --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+    --body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #0D1230;
+      --surface: #151B41;
+      --ink: #ECEEFA;
+      --muted: #A3AACB;
+      --line: #2B3366;
+      --accent: #9C92FF;
+      --accent-soft: #2A2870;
+      --link-node: #4FD1C1;
+    }
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-underline-offset: 0.2em; }
+  a:focus-visible, button:focus-visible, .node:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  header.top {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 22px 0;
+  }
+  header.top .mark { font-family: var(--display); font-weight: 800; font-size: 1.15rem; color: var(--ink); text-decoration: none; }
+  header.top nav { display: flex; gap: 22px; flex-wrap: wrap; }
+  header.top nav a { color: var(--muted); text-decoration: none; font-weight: 500; }
+  header.top nav a:hover { color: var(--ink); }
+
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    gap: 32px;
+    align-items: center;
+    padding: 40px 0 72px;
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(3rem, 8vw, 5.6rem);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    margin: 0 0 24px;
+  }
+  .hero p { max-width: 34em; margin: 0 0 16px; color: var(--muted); }
+  .hero p.lead { color: var(--ink); font-size: 1.2rem; line-height: 1.5; }
+  .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+  .btn {
+    display: inline-block; padding: 12px 20px; border-radius: 999px;
+    font-weight: 600; text-decoration: none; border: 1.5px solid var(--ink); color: var(--ink);
+  }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  @media (prefers-color-scheme: dark) { .btn.primary { color: #0D1230; } }
+
+  .graph { position: relative; }
+  .graph svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .graph .edge { stroke: var(--line); stroke-width: 1.5; transition: stroke .2s, opacity .2s; }
+  .graph .node circle { transition: r .2s, fill .2s, opacity .2s; }
+  .graph .node.project circle { fill: var(--accent); }
+  .graph .node.tech circle { fill: var(--paper); stroke: var(--link-node); stroke-width: 2; }
+  .graph .node text { font-family: var(--body); fill: var(--muted); font-size: 13px; transition: opacity .2s, fill .2s; }
+  .graph .node.project text { font-family: var(--display); font-weight: 600; font-size: 15px; fill: var(--ink); }
+  .graph .node.project { cursor: pointer; }
+  .graph.focus .edge, .graph.focus .node { opacity: 0.18; }
+  .graph.focus .edge.on { opacity: 1; stroke: var(--accent); }
+  .graph.focus .node.on { opacity: 1; }
+  .graph.focus .node.tech.on text { fill: var(--ink); }
+  .graph figcaption { color: var(--muted); font-size: 0.9rem; margin-top: 8px; }
+
+  section { padding: 56px 0; border-top: 1px solid var(--line); }
+  section h2 {
+    font-family: var(--display); font-weight: 800;
+    font-size: clamp(1.8rem, 4vw, 2.6rem); letter-spacing: -0.02em; line-height: 1.05;
+    margin: 0 0 28px;
+  }
+
+  .project {
+    display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr);
+    gap: 8px 32px; padding: 24px 0; border-top: 1px solid var(--line);
+    scroll-margin-top: 24px;
+  }
+  .project:first-of-type { border-top: 0; padding-top: 0; }
+  .project h3 { font-family: var(--display); font-weight: 600; font-size: 1.35rem; line-height: 1.2; margin: 0; }
+  .project .role { color: var(--muted); font-size: 0.95rem; margin: 6px 0 0; }
+  .project p { margin: 0 0 12px; max-width: 38em; }
+  .project.lit h3 { color: var(--accent); }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0 0 12px; }
+  .tags li { background: var(--accent-soft); border-radius: 6px; padding: 2px 10px; font-size: 0.875rem; font-weight: 500; }
+
+  .two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; }
+  .entry h3 { font-family: var(--display); font-weight: 600; font-size: 1.2rem; margin: 0; }
+  .entry .when { color: var(--muted); font-size: 0.95rem; margin: 2px 0 10px; }
+  .entry ul { margin: 0; padding-left: 1.1em; }
+  .entry li { margin-bottom: 6px; }
+  .entry + .entry { margin-top: 28px; }
+
+  .skills { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+  .skills h3 { font-family: var(--display); font-weight: 600; font-size: 1.1rem; margin: 0 0 8px; }
+  .skills p { margin: 0; color: var(--muted); }
+
+  .contact {
+    background: var(--surface); border-radius: 20px; padding: 40px;
+    display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap;
+  }
+  .contact h2 { margin: 0 0 8px; }
+  .contact p { margin: 0; color: var(--muted); max-width: 32em; }
+  footer { padding: 28px 0 48px; color: var(--muted); font-size: 0.9rem; }
+
+  @media (max-width: 820px) {
+    .hero { grid-template-columns: 1fr; padding-top: 16px; }
+    .project, .two, .skills { grid-template-columns: 1fr; }
+    .contact { padding: 28px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <a class="mark" href="#top">Ilyas Laanani</a>
+    <nav aria-label="Sections">
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <div class="hero">
+      <div>
+        <h1>Ilyas<br>Laanani</h1>
+        <p class="lead">Computer science engineering student in Lyon. At Orange France I model the national telecom network as a graph. On my own time I build games.</p>
+        <p>I am looking for a 12-week international software engineering internship between May and September 2027.</p>
+        <div class="actions">
+          <a class="btn primary" href="#projects">See my projects</a>
+          <a class="btn" data-link="github" href="#">GitHub profile</a>
+        </div>
+      </div>
+
+      <figure class="graph" id="graph" style="margin:0">
+        <svg viewBox="0 0 590 480" role="img" aria-label="Graph linking my projects to the technologies they use"></svg>
+        <figcaption>My work drawn as a graph: filled nodes are projects, rings are technologies. Hover or tap a project.</figcaption>
+      </figure>
+    </div>
+
+    <section id="projects">
+      <h2>Projects</h2>
+      <div id="project-list"></div>
+    </section>
+
+    <section id="experience">
+      <h2>Experience and education</h2>
+      <div class="two">
+        <div>
+          <div class="entry">
+            <h3>Apprentice software engineer, Orange France</h3>
+            <p class="when">September 2025 to present, Lyon</p>
+            <ul>
+              <li>Design and development of the Network Digital Twin, a graph model of the national telecom network.</li>
+              <li>Optimized ArangoDB bulk-import performance and wrote a script that safely handles delta node deletions.</li>
+              <li>Built a Python data-enrichment pipeline with automated batch processing.</li>
+              <li>Work within a team of about 30 developers, architects and network experts.</li>
+            </ul>
+          </div>
+          <div class="entry">
+            <h3>President, Polyenco</h3>
+            <p class="when">Junior Enterprise of Polytech Lyon</p>
+            <ul>
+              <li>Led the presidential handover and the association's compliance steps.</li>
+              <li>Worked on the business plan and on client negotiation.</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="entry">
+            <h3>Engineering degree in computer science</h3>
+            <p class="when">Polytech Lyon, Université Claude Bernard Lyon 1, 2025 to 2028</p>
+            <p style="margin:0">Apprenticeship track. Preceded by the two-year integrated preparatory cycle at Polytech Lyon, 2023 to 2025.</p>
+          </div>
+          <div class="entry">
+            <h3>Languages</h3>
+            <p style="margin:0">French (native), English (C1), Arabic (B2), Japanese (basic, self-study).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <h2>Skills</h2>
+      <div class="skills">
+        <div><h3>Languages</h3><p>Java, C++, Python, JavaScript and TypeScript, SQL, HTML and CSS.</p></div>
+        <div><h3>Graphs and data</h3><p>ArangoDB, RDF and SPARQL, NetworkX, graph modeling, pandas.</p></div>
+        <div><h3>Games and web</h3><p>Unreal Engine 5 with Blueprints and C++, Node.js, Angular, Git, Agile and Scrum.</p></div>
+      </div>
+    </section>
+
+    <section id="contact" style="border-top:0; padding-top:8px">
+      <div class="contact">
+        <div>
+          <h2>Get in touch</h2>
+          <p>I am happy to talk about internships, graph databases or game development.</p>
+        </div>
+        <div class="actions" style="margin:0">
+          <a class="btn primary" data-link="email" href="#">Send me an email</a>
+          <a class="btn" data-link="linkedin" href="#">LinkedIn</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>Ilyas Laanani, Lyon, France.</footer>
+</div>
+
+<script>
+/* ============================================================
+   EDIT THIS PART. Everything on the page is generated from it.
+   - Put your GitHub username and LinkedIn URL below.
+   - For each project, set "repo" to the repository name on your
+     GitHub account, or leave it as null to hide the link.
+   ============================================================ */
+const PROFILE = {
+  github: "YOUR_GITHUB_USERNAME",
+  linkedin: "",                       // e.g. "https://www.linkedin.com/in/your-name" (empty = button hidden)
+  email: "ilyaslaan@gmail.com"
+};
+
+const PROJECTS = [
+  {
+    id: "twin", name: "Network Digital Twin", role: "Orange France, apprenticeship", repo: null,
+    text: "A graph model of Orange France's national telecom network. I work on the data model, import performance and data quality.",
+    tech: ["Python", "ArangoDB", "NetworkX", "RDF"], x: 205, y: 160
+  },
+  {
+    id: "chess", name: "Java chess engine", role: "University project", repo: null,
+    text: "Piece movement built on the Decorator pattern, a puzzle mode with verified mate-in-1 positions, castling and en passant through a ghost-pawn technique, and a few concurrency bugs fixed along the way.",
+    tech: ["Java", "Swing", "MVC"], x: 440, y: 105
+  },
+  {
+    id: "rpg", name: "Unreal Engine 5 RPG prototype", role: "Personal project", repo: null,
+    text: "A small role-playing game prototype built with Blueprints and C++.",
+    tech: ["Unreal Engine 5", "C++", "Blueprints"], x: 430, y: 390
+  },
+  {
+    id: "velov", name: "Trouve ton Vélov'", role: "Team lead, six people", repo: null,
+    text: "A web and mobile app for Lyon's bike-share network, with maps and a graph database behind it. I led the team and shipped the mobile build.",
+    tech: ["ArangoDB", "TypeScript", "Node.js", "Angular"], x: 390, y: 258
+  },
+  {
+    id: "rag", name: "RAG pipeline", role: "Personal project", repo: null,
+    text: "A retrieval-augmented generation pipeline that answers questions from a document collection.",
+    tech: ["Python", "LangChain", "ChromaDB"], x: 130, y: 330
+  }
+];
+
+/* Positions of the technology nodes in the hero graph (viewBox 590 x 480). */
+const TECH_POS = {
+  "Python": [95, 235], "ArangoDB": [295, 185], "NetworkX": [95, 85], "RDF": [245, 55],
+  "Java": [375, 30], "Swing": [548, 40], "MVC": [535, 150],
+  "TypeScript": [525, 238], "Node.js": [510, 312], "Angular": [318, 332],
+  "LangChain": [50, 410], "ChromaDB": [205, 420],
+  "Unreal Engine 5": [450, 452], "C++": [325, 442], "Blueprints": [552, 428]
+};
+/* ======================= END OF EDITABLE PART ======================= */
+
+const NS = "http://www.w3.org/2000/svg";
+const el = (name, attrs = {}, text) => {
+  const n = document.createElementNS(NS, name);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  if (text) n.textContent = text;
+  return n;
+};
+
+// Links
+const hasGithub = PROFILE.github && PROFILE.github !== "YOUR_GITHUB_USERNAME";
+document.querySelectorAll("[data-link]").forEach(a => {
+  const kind = a.dataset.link;
+  if (kind === "email") a.href = "mailto:" + PROFILE.email;
+  else if (kind === "github") { if (hasGithub) a.href = "https://github.com/" + PROFILE.github; else a.hidden = true; }
+  else if (kind === "linkedin") { if (PROFILE.linkedin) a.href = PROFILE.linkedin; else a.hidden = true; }
+});
+
+// Project list
+const list = document.getElementById("project-list");
+PROJECTS.forEach(p => {
+  const art = document.createElement("article");
+  art.className = "project"; art.id = "p-" + p.id;
+  const link = hasGithub && p.repo
+    ? `<a href="https://github.com/${PROFILE.github}/${p.repo}">View the code on GitHub</a>` : "";
+  art.innerHTML = `
+    <div><h3></h3><p class="role"></p></div>
+    <div><p></p><ul class="tags"></ul>${link}</div>`;
+  art.querySelector("h3").textContent = p.name;
+  art.querySelector(".role").textContent = p.role;
+  art.querySelector("div + div p").textContent = p.text;
+  const tags = art.querySelector(".tags");
+  p.tech.forEach(t => { const li = document.createElement("li"); li.textContent = t; tags.appendChild(li); });
+  list.appendChild(art);
+});
+
+// Hero graph
+const fig = document.getElementById("graph");
+const svg = fig.querySelector("svg");
+const edgeLayer = el("g"), nodeLayer = el("g");
+svg.append(edgeLayer, nodeLayer);
+const techNodes = {};
+
+Object.entries(TECH_POS).forEach(([name, [x, y]]) => {
+  const g = el("g", { class: "node tech" });
+  g.append(el("circle", { cx: x, cy: y, r: 6 }), el("text", { x, y: y + 22, "text-anchor": "middle" }, name));
+  nodeLayer.appendChild(g); techNodes[name] = g;
+});
+
+PROJECTS.forEach(p => {
+  const edges = p.tech.filter(t => TECH_POS[t]).map(t => {
+    const [tx, ty] = TECH_POS[t];
+    const line = el("line", { class: "edge", x1: p.x, y1: p.y, x2: tx, y2: ty });
+    edgeLayer.appendChild(line); return line;
+  });
+  const g = el("g", { class: "node project", tabindex: 0, role: "link", "aria-label": p.name + ", go to project" });
+  g.append(el("circle", { cx: p.x, cy: p.y, r: 11 }), el("text", { x: p.x, y: p.y - 18, "text-anchor": "middle" }, p.name));
+  nodeLayer.appendChild(g);
+
+  const card = document.getElementById("p-" + p.id);
+  const on = state => {
+    fig.classList.toggle("focus", state);
+    g.classList.toggle("on", state);
+    edges.forEach(e => e.classList.toggle("on", state));
+    p.tech.forEach(t => techNodes[t] && techNodes[t].classList.toggle("on", state));
+    card.classList.toggle("lit", state);
+  };
+  const go = () => card.scrollIntoView({ block: "start" });
+  g.addEventListener("mouseenter", () => on(true));
+  g.addEventListener("mouseleave", () => on(false));
+  g.addEventListener("focus", () => on(true));
+  g.addEventListener("blur", () => on(false));
+  g.addEventListener("click", go);
+  g.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+});
+</script>
+</body>
+</html>
